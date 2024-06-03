@@ -1,5 +1,6 @@
 /.venv
 Pipfile.lock
+__pycache__/
 # Django SQL database
 db.sqlite3
 db.sqlite3-journal

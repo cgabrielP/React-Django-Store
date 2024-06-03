@@ -24,11 +24,13 @@ export const CardList = () => {
           return (
             <CardProduct
               key={prod.id}
+              id={prod.id}
               title={prod.description}
               price={prod.price}
               brand={prod.brand}
               image={prod.image}
               rating={prod.rating}
+              stock={prod.stock}
             />
           );
         })}

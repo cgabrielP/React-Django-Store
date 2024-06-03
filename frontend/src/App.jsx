@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage"
 import Login from "./pages/Login";
 import SingUp from "./pages/SingUp";
+import ProductDetail from "./components/ProductDetail";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/error" element={<ErrorPage/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/signUp" element={<SingUp/>} />
+        <Route path="/product-detail/:id" element={<ProductDetail/>} />
       </Routes>
     </Router>
   );
