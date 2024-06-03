@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Layout } from "./Layout";
 import axios from "axios";
 
 const ProductDetail = () => {
@@ -56,7 +55,7 @@ const ProductDetail = () => {
   }
   return (
     <>
-      <Layout>
+
         <div className="container my-5">
           <div className="row">
             <div className="col-md-6">
@@ -108,7 +107,7 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
-      </Layout>
+
     </>
   );
 };
