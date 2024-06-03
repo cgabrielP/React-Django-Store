@@ -1,10 +1,10 @@
 import React from "react";
-
+import '../styles/CardProduct.css'
 export const CardProduct = ({ title,price,brand,rating,image }) => {
   return (
     <>
       <div className="col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-5">
-        <div className="card border border-0 p-1">
+        <div className="card h-100 border border-0 p-1">
           <a href="detalle.html">
             <img
               src={image}
@@ -18,7 +18,7 @@ export const CardProduct = ({ title,price,brand,rating,image }) => {
               <span className="badge text-bg-secondary bg-opacity-25">1 un</span>
             </div>
             <div className="fw-light">{brand}</div>
-            <p className="card-text">{title}</p>
+            <p className="card-text text-truncate-multiline">{title}</p>
             <div className="d-grid col-12">
               <a
                 href="#"
