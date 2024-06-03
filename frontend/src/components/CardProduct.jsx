@@ -1,13 +1,13 @@
 import React from "react";
 
-export const CardProduct = ({ title,price,brand,rating }) => {
+export const CardProduct = ({ title,price,brand,rating,image }) => {
   return (
     <>
       <div className="col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-5">
         <div className="card border border-0 p-1">
           <a href="detalle.html">
             <img
-              src="https://placehold.co/600x400"
+              src={image}
               className="card-img-top"
               alt="..."
             />

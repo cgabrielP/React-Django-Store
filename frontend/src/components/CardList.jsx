@@ -7,7 +7,7 @@ export const CardList = () => {
     
   useEffect(() => {
     axios
-      .get("/mocks/data.json")
+      .get("http://127.0.0.1:8000/api/products/")
       .then((response) => {
         setProducts(response.data);
       })
@@ -24,10 +24,11 @@ export const CardList = () => {
           return (
             <CardProduct
               key={prod.id}
-              title={prod.descripcion}
-              price={prod.precio}
-              brand={prod.marca}
-              rating={prod.valoracion}
+              title={prod.description}
+              price={prod.price}
+              brand={prod.brand}
+              image={prod.image}
+              rating={prod.rating}
             />
           );
         })}
