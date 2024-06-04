@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useCart } from "../context/CartContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -8,11 +9,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const addToCart=(item)=> {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.push(item);
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
+  const {addToCart}=useCart();
 
 
   useEffect(() => {
@@ -104,6 +101,8 @@ const ProductDetail = () => {
               <button className="btn btn-light w-10 mt-3 ms-1">
                 <i className="fa-solid fa-star text-warning"></i>
               </button>
+              <div className="pt-5 fw-bold">Descripcion:</div>
+              <div>{product.description}</div>
             </div>
           </div>
         </div>

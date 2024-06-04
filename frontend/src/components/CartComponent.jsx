@@ -1,27 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useCart } from "../context/CartContext";
 
 const CartComponent = () => {
-  const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState(0);
+  const { cart, total } = useCart();
 
-  const getCart = () => {
-    return JSON.parse(localStorage.getItem("cart")) || [];
-  };
-  const sumValue = () => {
-    let totalValue = 0;
-    cart.forEach((item) => {
-      console.log(item);
-      totalValue += item.price;
-    });
-    setTotal(totalValue);
-  };
-
-  useEffect(() => {
-    setCart(getCart());
-  }, []);
-  useEffect(() => {
-    sumValue();
-  }, [cart]);
   return (
     <>
       <div
@@ -42,8 +24,8 @@ const CartComponent = () => {
           ></button>
         </div>
         <div className="offcanvas-body d-flex flex-column">
-          {cart.map((item) => {
-            return <CartItem key={item.id} item={item} />;
+          {cart.map((item,index) => {
+            return <CartItem key={index} item={item} />;
           })}
 
           <div className="offcanvas-footer mt-auto">

@@ -25,7 +25,7 @@ export const CardList = () => {
             <CardProduct
               key={prod.id}
               id={prod.id}
-              title={prod.description}
+              title={prod.name}
               price={prod.price}
               brand={prod.brand}
               image={prod.image}
