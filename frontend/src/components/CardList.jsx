@@ -20,17 +20,11 @@ export const CardList = () => {
   return (
     <div className="container">
       <div className="row my-3 d-flex justify-content-start">
-        {products.map((prod) => {
+        {products.map((prod,index) => {
           return (
             <CardProduct
-              key={prod.id}
-              id={prod.id}
-              title={prod.name}
-              price={prod.price}
-              brand={prod.brand}
-              image={prod.image}
-              rating={prod.rating}
-              stock={prod.stock}
+              key={index}
+              prod={prod}
             />
           );
         })}

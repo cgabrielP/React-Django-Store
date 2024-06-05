@@ -11,11 +11,13 @@ def product_list(request):
     elif request.method == 'POST':
         data = json.loads(request.body)
         product = Product.objects.create(
+            name=data['name'],
             description=data['description'],
             price=data['price'],
             image=data.get('image', ''),
             brand=data['brand'],
             rating=data.get('rating', 0),
+            quantity=data.get('quantity', 1),
             stock=data.get('stock', 0)
         )
         return JsonResponse({'id': product.id})
@@ -30,22 +32,26 @@ def product_detail(request, product_id):
     if request.method == 'GET':
         return JsonResponse({
             'id': product.id,
+            'name': product.name,
             'description': product.description,
             'price': product.price,
             'image': product.image,
             'brand': product.brand,
             'rating': product.rating,
             'stock': product.stock,
+            'quantity': product.quantity,
             'created_at': product.created_at,
             'updated_at': product.updated_at
         })
     elif request.method == 'PUT':
         data = json.loads(request.body)
+        product.name = data['name']
         product.description = data['description']
         product.price = data['price']
         product.image = data.get('image', product.image)
         product.brand = data['brand']
         product.rating = data.get('rating', product.rating)
+        product.quantity = data.get('quantity', product.quantity)
         product.stock = data.get('stock', product.stock)
         product.save()
         return JsonResponse({'id': product.id})

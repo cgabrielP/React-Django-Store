@@ -68,9 +68,9 @@ const CartItem = ({ item }) => {
                   alt="..."
                 />
               </div>
-              <div className="col-md-7">
-                <div className="card-body">
-                  <div className="card-title fs-6">{item.description}</div>
+              <div className="col-md-7 ">
+                <div className="card-body ms-1">
+                  <div className="card-title fs-6">{item.name}</div>
                   <div
                     className="btn-group align-items-center mt-2"
                     role="group"
@@ -79,7 +79,7 @@ const CartItem = ({ item }) => {
                     <button type="button" className="btn btn-success">
                       <i className="fa-solid fa-trash-can"></i>
                     </button>
-                    <div className="px-1">1 un.</div>
+                    <div className="px-1">{item.quantity} un.</div>
                     <button type="button" className="btn btn-success">
                       <i className="fa-solid fa-plus"></i>
                     </button>
