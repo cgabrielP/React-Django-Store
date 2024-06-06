@@ -1,13 +1,13 @@
 import React from "react";
 import "../styles/CardProduct.css";
 import { Link } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import { useData } from "../context/CartContext";
 
 
 export const CardProduct = ({
   prod
 }) => {
-  const{addToCart}=useCart();
+  const{addToCart}=useData();
   return (
     <>
       <div className="col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-5">

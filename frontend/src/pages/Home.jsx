@@ -1,11 +1,13 @@
 import React from "react";
 import { Layout } from "../components/Layout";
 import { CardList } from "../components/CardList";
+import Carrousel from "../components/Carrousel";
 
 const Home = () => {
   return (
     <>
-      <h1>Home</h1>
+      <Carrousel/>
+      <h3 className="py-2">Lo mas buscado</h3>
       <CardList />
     </>
   );

@@ -51,8 +51,13 @@ Esto iniciará el servidor de desarrollo de React y podrás ver tu aplicación e
     ```bash
     pipenv install
     ```
+
+5. realiza las migraciones 
+    ```bash
+    python manage.py migrate
+    ```
     
-5. Ejecuta el servidor de desarrollo
+6. Ejecuta el servidor de desarrollo
     ```bash
     python manage.py runserver
     ```

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useCart } from "../context/CartContext";
+import { useData } from "../context/CartContext";
 
 const CartComponent = () => {
-  const { cart, total } = useCart();
+  const { cart, total } = useData();
 
   return (
     <>

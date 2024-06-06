@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/logo/logo-pequeño.png";
 import { Link } from "react-router-dom";
-import CartComponent from './CartComponent'
-
+import CartComponent from "./CartComponent";
+import { useData } from "../context/CartContext";
 export const Navbar = () => {
-
+  const { cart } = useData();
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark fs-6 py-0">
@@ -48,7 +48,7 @@ export const Navbar = () => {
         </div>
       </nav>
       <nav className="navbar sticky-top navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
+        <div className="container">
           <button
             className="navbar-toggler border-0"
             type="button"
@@ -152,19 +152,20 @@ export const Navbar = () => {
               </ul>
             </div>
             <button
-              className="btn position-relative"
+              className="btn position-relative fa-solid fa-cart-shopping pt-1"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#carrito"
               aria-controls="offcanvasRight"
             >
-              <i className="fa-solid fa-cart-shopping"></i>
+              {cart.length<=0?'':<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {cart.length}
+              </span>}
             </button>
           </div>
         </div>
       </nav>
-      <CartComponent/>
+      <CartComponent />
     </>
   );
 };
-

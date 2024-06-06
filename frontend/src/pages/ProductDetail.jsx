@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useCart } from "../context/CartContext";
+import { useData } from "../context/CartContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -10,7 +10,7 @@ const ProductDetail = () => {
   const [error, setError] = useState(false);
   const [amount, setAmount] = useState(1);
 
-  const { addToCart } = useCart();
+  const { addToCart } = useData();
   const updateAmount = (newAmount) => {
     setAmount(Math.max(1, newAmount));
   };

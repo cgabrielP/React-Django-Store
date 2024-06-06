@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CardProduct } from "./CardProduct";
+import { useData } from "../context/CartContext";
 
 export const CardList = () => {
-  const [products, setProducts] = useState([]);
+  const {products}=useData();
+/*   const [products, setProducts] = useState([]);
     
   useEffect(() => {
     axios
@@ -15,7 +17,7 @@ export const CardList = () => {
         console.error("Error al cargar los datos:", error);
       });
       
-  }, []);
+  }, []); */
 
   return (
     <div className="container">
