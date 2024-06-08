@@ -32,7 +32,12 @@ def login(request):
 
         try:
             user = User.objects.get(email=email, password=password)
-            return JsonResponse({'message': 'Login successful!'})
+            user_data={
+                'id': user.id,
+                'name': user.name,
+                'email': user.email,
+            }
+            return JsonResponse({'message': 'Login successful!','user': user_data})
         except User.DoesNotExist:
             return JsonResponse({'error': 'Invalid email or password'}, status=400)
     else:
