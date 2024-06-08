@@ -3,8 +3,12 @@ import logo from "../assets/logo/logo-pequeño.png";
 import { Link } from "react-router-dom";
 import CartComponent from "./CartComponent";
 import { useData } from "../context/CartContext";
+import { useLogin } from "../context/LogContext";
+import "../styles/Navbar.css";
+
 export const Navbar = () => {
   const { cart } = useData();
+  const { user, logout } = useLogin();
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark fs-6 py-0">
@@ -118,37 +122,63 @@ export const Navbar = () => {
               </form>
             </div>
 
-            <div className="dropdown nav-link">
+            <div className="dropdown">
               <button
-                className="btn dropdown-toggle fw-bold"
+                className="btn dropdown-toggle fw-bold user-name"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 <i className="fa-regular fs-4 fa-user text-success px-1"></i>
-                Ingresa/Registrate
+
+                {user ? user.name : "Ingresa/Regístrate"}
               </button>
               <ul className="dropdown-menu">
-                <li>
-                  <button className="dropdown-item d-block" type="button">
-                    <Link
-                      className="text-decoration-none text-dark"
-                      to="/login"
-                    >
-                      Ingresar
-                    </Link>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item d-block text-success"
-                    type="button"
-                  >
-                    <Link className="text-success fw-bold" to="/SignUp">
-                      Registarse
-                    </Link>
-                  </button>
-                </li>
+                {user && (
+                  <>
+                    <li>
+                      <button className="dropdown-item" type="button">
+                        <Link to="/" className="text-decoration-none text-dark">
+                          Mis pedidos
+                        </Link>
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item text-danger fw-bold"
+                        type="button"
+                        onClick={logout}
+                      >
+                        Cerrar Sesión
+                        <i className="fa-solid fa-power-off px-1"></i>
+                      </button>
+                    </li>
+                  </>
+                )}
+                {!user && (
+                  <>
+                    <li>
+                      <button className="dropdown-item" type="button">
+                        <Link
+                          className="text-decoration-none text-dark"
+                          to="/login"
+                        >
+                          Ingresar
+                        </Link>
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item text-success"
+                        type="button"
+                      >
+                        <Link className="text-success fw-bold" to="/SignUp">
+                          Registrarse
+                        </Link>
+                      </button>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
             <button
@@ -158,9 +188,13 @@ export const Navbar = () => {
               data-bs-target="#carrito"
               aria-controls="offcanvasRight"
             >
-              {cart.length<=0?'':<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {cart.length}
-              </span>}
+              {cart.length <= 0 ? (
+                ""
+              ) : (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {cart.length}
+                </span>
+              )}
             </button>
           </div>
         </div>
