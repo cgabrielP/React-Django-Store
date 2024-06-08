@@ -1,10 +1,10 @@
-import React from 'react'
-import { Layout } from '../components/Layout'
+import React from "react";
+import RegisterForm from "../components/RegisterForm";
 
 const SingUp = () => {
   return (
-        <h1>SignUp</h1>  
+    <RegisterForm/>
   )
-}
+};
 
-export default SingUp
+export default SingUp;
