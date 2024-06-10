@@ -9,8 +9,9 @@ const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [pass, setPassword] = useState("");
   const navigate = useNavigate();
-  const submitData = () => {
-    axios
+  const submitData = async (e) => {
+    e.preventDefault();
+    await axios
       .post("http://127.0.0.1:8000/api/register/", {
         name: name,
         surname: surname,
