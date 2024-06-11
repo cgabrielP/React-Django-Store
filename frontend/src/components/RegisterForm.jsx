@@ -50,7 +50,7 @@ const RegisterForm = () => {
                     id="miRegistro"
                     onSubmit={handleSubmit(submitData)}
                   >
-                    <div className="d-flex flex-row align-items-center mb-4">
+                    <div className="d-flex flex-row align-items-center mb-3">
                       <i className="fas fa-user fa-lg me-3"></i>
                       <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="nameUser">
@@ -66,17 +66,17 @@ const RegisterForm = () => {
                           placeholder="Nombre"
                         />
                         {errors?.firstName?.type === "required" && (
-                          <p>Campo requerido</p>
+                          <div className="text-danger">Campo requerido</div>
                         )}
                         {errors?.firstName?.type === "maxLength" && (
-                          <p>No puede exceder los veinte caracteres</p>
+                          <div className="text-danger">No puede exceder los veinte caracteres</div>
                         )}
                         {errors?.firstName?.type === "pattern" && (
-                          <p>Solo caracteres alfabeticos</p>
+                          <div className="text-danger">Solo caracteres alfabeticos</div>
                         )}
                       </div>
                     </div>
-                    <div className="d-flex flex-row align-items-center mb-4">
+                    <div className="d-flex flex-row align-items-center mb-3">
                       <i className="fas fa-user fa-lg me-3"></i>
                       <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="surname">
@@ -92,17 +92,17 @@ const RegisterForm = () => {
                           placeholder="Apellido"
                         />
                         {errors?.surName?.type === "required" && (
-                          <p>Campo requerido</p>
+                          <div className="text-danger">Campo requerido</div>
                         )}
                         {errors?.surName?.type === "maxLength" && (
-                          <p>No puede exceder los veinte caracteres</p>
+                          <div className="text-danger">No puede exceder los veinte caracteres</div>
                         )}
                         {errors?.surName?.type === "pattern" && (
-                          <p>Solo caracteres alfabeticos</p>
+                          <div className="text-danger">Solo caracteres alfabeticos</div>
                         )}
                       </div>
                     </div>
-                    <div className="d-flex flex-row align-items-center mb-4">
+                    <div className="d-flex flex-row align-items-center mb-3">
                       <i className="fas fa-envelope fa-lg me-3"></i>
                       <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="email">
@@ -120,14 +120,14 @@ const RegisterForm = () => {
                           })}
                         />
                         {errors?.email?.type === "required" && (
-                          <p>Campo requerido</p>
+                          <div className="text-danger">Campo requerido</div>
                         )}
                         {errors?.email?.type === "pattern" && (
-                          <p>Ingresa un correo valido</p>
+                          <div className="text-danger">Ingresa un correo valido</div>
                         )}
                       </div>
                     </div>
-                    <div className="d-flex flex-row align-items-center mb-4">
+                    <div className="d-flex flex-row align-items-center mb-3">
                       <i className="fas fa-lock fa-lg me-3"></i>
                       <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="password">
@@ -158,7 +158,7 @@ const RegisterForm = () => {
                         )}
                       </div>
                     </div>
-                    <div className="d-flex flex-row align-items-center mb-4">
+                    <div className="d-flex flex-row align-items-center mb-3">
                       <i className="fas fa-key fa-lg me-3"></i>
                       <div className="form-outline flex-fill mb-0">
                         <label
