@@ -13,15 +13,15 @@ def register(request):
         password = data.get('password')
         
         if not name or not surname or not email or not password:
-            return JsonResponse({'error': 'All fields are required'}, status=400)
+            return JsonResponse({'error': 'Todos los campos son requeridos'}, status=400)
         
         if User.objects.filter(email=email).exists():
-            return JsonResponse({'error': 'Email is already registered'}, status=400)
+            return JsonResponse({'error': 'Email ya existente'}, status=400)
         
         user = User.objects.create(name=name, surname=surname, email=email, password=password)
-        return JsonResponse({'message': 'User created successfully!'})
+        return JsonResponse({'message': 'Usuario creado exitosamente'})
     else:
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
+        return JsonResponse({'error': 'Metodo invalido'}, status=405)
     
 @csrf_exempt
 def login(request):

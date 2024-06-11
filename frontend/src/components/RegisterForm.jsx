@@ -2,21 +2,26 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logo-login.png";
+import { useForm } from "react-hook-form";
 
 const RegisterForm = () => {
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [email, setEmail] = useState("");
-  const [pass, setPassword] = useState("");
+  const [error,setError]=useState("")
   const navigate = useNavigate();
-  const submitData = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  let data=watch();
+    const submitData = async () => {
     await axios
       .post("http://127.0.0.1:8000/api/register/", {
-        name: name,
-        surname: surname,
-        email: email,
-        password: pass,
+        name: data.firstName,
+        surname: data.surName,
+        email: data.email,
+        password: data.pass,
       })
       .then((response) => {
         console.log(response);
@@ -24,8 +29,10 @@ const RegisterForm = () => {
       })
       .catch((error) => {
         console.log(error);
+        setError(error.response.data.error)
       });
   };
+
 
   return (
     <div className="container h-100 my-4 p-3">
@@ -41,21 +48,32 @@ const RegisterForm = () => {
                   <form
                     className="mx-1 mx-md-4 p-2"
                     id="miRegistro"
-                    onSubmit={submitData}
+                    onSubmit={handleSubmit(submitData)}
                   >
                     <div className="d-flex flex-row align-items-center mb-4">
-                        <i className="fas fa-user fa-lg me-3"></i>
+                      <i className="fas fa-user fa-lg me-3"></i>
                       <div className="form-outline flex-fill mb-0">
                         <label className="form-label" htmlFor="nameUser">
                           Nombre
                         </label>
                         <input
-                          type="text"
-                          id="nameUser"
+                          {...register("firstName", {
+                            required: true,
+                            maxLength: 20,
+                            pattern: /^[A-Za-z]+$/i,
+                          })}
                           className="form-control"
                           placeholder="Nombre"
-                          onChange={(e) => setName(e.target.value)}
                         />
+                        {errors?.firstName?.type === "required" && (
+                          <p>Campo requerido</p>
+                        )}
+                        {errors?.firstName?.type === "maxLength" && (
+                          <p>No puede exceder los veinte caracteres</p>
+                        )}
+                        {errors?.firstName?.type === "pattern" && (
+                          <p>Solo caracteres alfabeticos</p>
+                        )}
                       </div>
                     </div>
                     <div className="d-flex flex-row align-items-center mb-4">
@@ -65,12 +83,23 @@ const RegisterForm = () => {
                           Apellido
                         </label>
                         <input
-                          type="text"
-                          id="surname"
+                          {...register("surName", {
+                            required: true,
+                            maxLength: 20,
+                            pattern: /^[A-Za-z]+$/i,
+                          })}
                           className="form-control"
                           placeholder="Apellido"
-                          onChange={(e) => setSurname(e.target.value)}
                         />
+                        {errors?.surName?.type === "required" && (
+                          <p>Campo requerido</p>
+                        )}
+                        {errors?.surName?.type === "maxLength" && (
+                          <p>No puede exceder los veinte caracteres</p>
+                        )}
+                        {errors?.surName?.type === "pattern" && (
+                          <p>Solo caracteres alfabeticos</p>
+                        )}
                       </div>
                     </div>
                     <div className="d-flex flex-row align-items-center mb-4">
@@ -84,8 +113,18 @@ const RegisterForm = () => {
                           id="email"
                           className="form-control"
                           placeholder="Correo Electrónico"
-                          onChange={(e) => setEmail(e.target.value)}
+                          {...register("email", {
+                            required: true,
+                            pattern:
+                              /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm,
+                          })}
                         />
+                        {errors?.email?.type === "required" && (
+                          <p>Campo requerido</p>
+                        )}
+                        {errors?.email?.type === "pattern" && (
+                          <p>Ingresa un correo valido</p>
+                        )}
                       </div>
                     </div>
                     <div className="d-flex flex-row align-items-center mb-4">
@@ -99,8 +138,24 @@ const RegisterForm = () => {
                           id="password"
                           className="form-control"
                           placeholder="Contraseña..."
-                          onChange={(e) => setPassword(e.target.value)}
+                          {...register("pass", {
+                            required: true,
+                            minLength: 6,
+                            pattern:
+                              /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/,
+                          })}
                         />
+                        {errors?.pass?.type === "required" && (
+                          <div className="text-danger">Campo requerido</div>
+                        )}
+                        {errors?.pass?.type === "minLength" && (
+                          <div className="text-danger">Minimo 6 caracteres</div>
+                        )}
+                        {errors?.pass?.type === "pattern" && (
+                          <div className="text-danger">
+                            Al menos una mayuscula,minuscula y numero
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="d-flex flex-row align-items-center mb-4">
@@ -117,32 +172,28 @@ const RegisterForm = () => {
                           id="passwordConfirmation"
                           className="form-control"
                           placeholder="Confirmar Contraseña..."
+                          {...register("confirmPass", {
+                            required: true,
+                            validate: value=>value===data.pass,
+                          })}
                         />
+                        {errors?.confirmPass?.type === "required" && (
+                          <div className="text-danger">Campo requerido</div>
+                        )}
+                        {errors?.confirmPass?.type === "validate" && (
+                          <div className="text-danger">
+                            Las contraseñas no coinciden
+                          </div>
+                        )}
                       </div>
                     </div>
-                    <div className="form-check d-flex justify-content-center mb-5">
-                      <input
-                        className="form-check-input me-2"
-                        type="checkbox"
-                        value=""
-                        id="form-privacid"
-                        required
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="form-privacid"
-                      >
-                        Estoy de acuerdo con todas las
-                        <a className="text-success" href="#!">
-                          política de privacidad.
-                        </a>
-                      </label>
-                    </div>
+
                     <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                       <button type="submit" className="btn btn-success btn-lg">
                         Registrarse
                       </button>
                     </div>
+                      {error&&<div className="d-flex justify-content-center text-danger">{error}</div>}
                   </form>
                 </div>
                 <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2 justify-content-center">
