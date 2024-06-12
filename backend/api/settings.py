@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'products',
-    'users'
+    'users',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -125,6 +126,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+ROLES = [
+    ('admin', 'Administrator'),
+    ('client', 'Client'),
+]
 CORS_ALLOW_ALL_ORIGINS = True
 
 

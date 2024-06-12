@@ -1,14 +1,10 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
+from django.conf import settings
 
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=100)
-    is_staff= models.BooleanField(default=False)
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-
+class UserProfile(models.Model):
+    user=models.OneToOneField(get_user_model(),on_delete=models.CASCADE)
+    role=models.CharField(max_length=100,choices=settings.ROLES,default='client')
+    
     def __str__(self):
-        return self.email
+        return self.user.email

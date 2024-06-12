@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from '../assets/logo/logo-login.png'
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useLogin();
@@ -13,12 +13,12 @@ const LoginForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-    const result = await login(email, password);
+    const result = await login(user, password);
     if (result.success) {
       localStorage.setItem('user',JSON.stringify(result.user));
       navigate("/");
     } else {
-      setError(result.error.message || "Login failed");
+      setError(result.error.error);
     }
   };
   
@@ -35,23 +35,22 @@ const LoginForm = () => {
                     <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
                       INICIO SESI&Oacute;N
                     </p>
-                    {error?<p className="alert alert-danger text-center">Clave o email incorrecto</p>:''}
+                    {error?<p className="alert alert-danger text-center">{error}</p>:''}
                     <form className="mx-1 mx-md-4" onSubmit={handleLogin}>
                       <div className="d-flex flex-row align-items-center mb-4">
                         <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
-                          <label className="form-label" htmlFor="login-email">
+                          <label className="form-label" htmlFor="login-user">
                             Correo Electr&oacute;nico
                           </label>
                           <input
-                            type="email"
-                            id="login-email"
+                            type="text"
+                            id="login-user"
                             className="form-control"
                             placeholder="Correo Electrónico"
                             onChange={(e)=>{
-                              setEmail(e.target.value)
+                              setUser(e.target.value)
                             }}
-                            required
                           />
                         </div>
                       </div>

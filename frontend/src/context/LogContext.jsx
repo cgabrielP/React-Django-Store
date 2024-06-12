@@ -11,10 +11,10 @@ export const LogProvider = ({ children }) => {
     localStorage.removeItem("user");
     setUser(null);
   };
-  const login = async (email, password) => {
+  const login = async (username, password) => {
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/login/", {
-        email: email,
+        username: username,
         password: password,
       });
       setUser(response.data.user);
