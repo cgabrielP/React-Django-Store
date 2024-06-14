@@ -3,12 +3,10 @@ import logo from "../assets/logo/logo-pequeño.png";
 import { Link } from "react-router-dom";
 import CartComponent from "./CartComponent";
 import { useData } from "../context/CartContext";
-import { useLogin } from "../context/LogContext";
 import "../styles/Navbar.css";
 
 export const Navbar = () => {
   const { cart } = useData();
-  const { user, logout } = useLogin();
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark fs-6 py-0">
@@ -131,10 +129,12 @@ export const Navbar = () => {
               >
                 <i className="fa-regular fs-4 fa-user text-success px-1"></i>
 
-                {user ? user.name : "Ingresa/Regístrate"}
+                {/* {user ? user.name : "Ingresa/Regístrate"} */}
+                Ingresa/Regístrate
               </button>
               <ul className="dropdown-menu">
-                {user && (
+              <Link to="/logout">Cerrar Sesion</Link>
+               {/*  {user && (
                   <>
                     <li>
                       <button className="dropdown-item" type="button">
@@ -178,7 +178,7 @@ export const Navbar = () => {
                       </button>
                     </li>
                   </>
-                )}
+                )} */}
               </ul>
             </div>
             <button

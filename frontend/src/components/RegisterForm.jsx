@@ -3,10 +3,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logo-login.png";
 import { useForm } from "react-hook-form";
-
+import { registerForm } from "../services/UserAuth";
 const RegisterForm = () => {
-  const [error,setError]=useState("")
+  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -14,25 +15,22 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm();
 
-  let data=watch();
-    const submitData = async () => {
-    await axios
-      .post("http://127.0.0.1:8000/api/register/", {
-        name: data.firstName,
-        surname: data.surName,
-        email: data.email,
-        password: data.pass,
-      })
-      .then((response) => {
-        console.log(response);
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(error.response.data.error)
-      });
-  };
+  let formData = watch(); // Mover aquí
 
+  const submitData = async () => {
+    try {
+      const responseData = await registerForm({
+        name: formData.firstName, 
+        surname: formData.surName,
+        email: formData.email,
+        password: formData.pass,
+      });
+      setMsg(responseData.message)
+      navigate('/login')
+    } catch (error) {
+      setMsg(error.error || 'Error en el registro');
+    }
+  };
 
   return (
     <div className="container h-100 my-4 p-3">
@@ -69,10 +67,14 @@ const RegisterForm = () => {
                           <div className="text-danger">Campo requerido</div>
                         )}
                         {errors?.firstName?.type === "maxLength" && (
-                          <div className="text-danger">No puede exceder los veinte caracteres</div>
+                          <div className="text-danger">
+                            No puede exceder los veinte caracteres
+                          </div>
                         )}
                         {errors?.firstName?.type === "pattern" && (
-                          <div className="text-danger">Solo caracteres alfabeticos</div>
+                          <div className="text-danger">
+                            Solo caracteres alfabeticos
+                          </div>
                         )}
                       </div>
                     </div>
@@ -95,10 +97,14 @@ const RegisterForm = () => {
                           <div className="text-danger">Campo requerido</div>
                         )}
                         {errors?.surName?.type === "maxLength" && (
-                          <div className="text-danger">No puede exceder los veinte caracteres</div>
+                          <div className="text-danger">
+                            No puede exceder los veinte caracteres
+                          </div>
                         )}
                         {errors?.surName?.type === "pattern" && (
-                          <div className="text-danger">Solo caracteres alfabeticos</div>
+                          <div className="text-danger">
+                            Solo caracteres alfabeticos
+                          </div>
                         )}
                       </div>
                     </div>
@@ -123,7 +129,9 @@ const RegisterForm = () => {
                           <div className="text-danger">Campo requerido</div>
                         )}
                         {errors?.email?.type === "pattern" && (
-                          <div className="text-danger">Ingresa un correo valido</div>
+                          <div className="text-danger">
+                            Ingresa un correo valido
+                          </div>
                         )}
                       </div>
                     </div>
@@ -174,7 +182,7 @@ const RegisterForm = () => {
                           placeholder="Confirmar Contraseña..."
                           {...register("confirmPass", {
                             required: true,
-                            validate: value=>value===data.pass,
+                            validate: (value) => value === formData.pass,
                           })}
                         />
                         {errors?.confirmPass?.type === "required" && (
@@ -193,7 +201,11 @@ const RegisterForm = () => {
                         Registrarse
                       </button>
                     </div>
-                      {error&&<div className="d-flex justify-content-center text-danger">{error}</div>}
+                    {msg && (
+                      <div className="d-flex justify-content-center text-danger">
+                        {msg}
+                      </div>
+                    )}
                   </form>
                 </div>
                 <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2 justify-content-center">

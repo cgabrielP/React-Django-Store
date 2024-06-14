@@ -1,10 +1,15 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import RegisterSerializer, UserProfileSerializer
 from django.contrib.auth import authenticate, login, logout
 from .models import UserProfile
-
+from django.contrib.auth.decorators import login_required
+from rest_framework_simplejwt.tokens import RefreshToken
+from .utils import getUserProfile
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(["POST"])
 def register(request):
@@ -46,35 +51,41 @@ def signIn(request):
                 )
 
             login(request, user)
-            profile_serializer = UserProfileSerializer(profile)
-            print(profile_serializer.data)
-            return Response(profile_serializer.data, status=status.HTTP_200_OK)
+            refresh = RefreshToken.for_user(user)
+            return Response(
+                {
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token),
+                },
+                status=status.HTTP_200_OK,
+            )
         else:
             return Response(
                 {"error": "Credenciales inválidas"}, status=status.HTTP_401_UNAUTHORIZED
             )
 
 
-""" @csrf_exempt
-def login(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        email = data.get("email")
-        password = data.get("password")
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def signOut(request):
+    logout(request)
+    return JsonResponse({'message': 'Cierre de sesión exitoso'}, status=200)
 
-        try:
-            user = User.objects.get(email=email)
-            if check_password(password, user.password):
-                user_data = {
-                    "id": user.id,
-                    "name": user.name,
-                    "email": user.email,
-                    "is_staff": user.is_staff,
-                }
-                return JsonResponse({"message": "Login successful!", "user": user_data})
-            else:
-                return JsonResponse({"error": "Invalid email or password"}, status=400)
-        except User.DoesNotExist:
-            return JsonResponse({"error": "Invalid email or password"}, status=400)
+
+@login_required
+@csrf_exempt
+def getUserDetail(request):
+    """
+    Vista para ver el perfil del usuario autenticado.
+    """
+    profile = getUserProfile(request.user)
+
+    if profile:
+        data = {
+            "email": profile.user.email,
+            "role": profile.role,
+            # Otros campos del perfil si los tienes
+        }
+        return JsonResponse(data)
     else:
-        return JsonResponse({"error": "Invalid request method"}, status=405) """
+        return JsonResponse({"error": "Perfil no encontrado"}, status=404)

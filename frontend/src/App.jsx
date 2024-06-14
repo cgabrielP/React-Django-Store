@@ -7,12 +7,12 @@ import SingUp from "./pages/SingUp";
 import ProductDetail from "./pages/ProductDetail";
 import { Layout } from "./components/Layout";
 import { CartProvider } from "./context/CartContext";
-import { LogProvider } from "./context/LogContext";
 import Orders from "./pages/Orders";
+import Profile from "./pages/Profile";
+import Logout from "./pages/Logout";
 
 const App = () => {
   return (
-    <LogProvider>
       <CartProvider>
         <Router>
           <Layout>
@@ -22,12 +22,14 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/signUp" element={<SingUp />} />
               <Route path="/product-detail/:id" element={<ProductDetail />} />
-              <Route path="/orders" element={<Orders />} />
+              <Route path="/logout" element={<Logout />} />
+
+{/*               <Route path="/orders" element={<Orders />} />
+ */}              <Route path="/profile" element={<Profile/>} />
             </Routes>
           </Layout>
         </Router>
       </CartProvider>
-    </LogProvider>
   );
 };
 
