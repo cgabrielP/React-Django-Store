@@ -10,35 +10,32 @@ const instance = axios.create({
     }
 });
 
-// Interceptor para actualizar el token JWT en cada solicitud
 instance.interceptors.request.use(config => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
-        config.headers.Authorization = `JWT ${accessToken}`;
+        config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
 }, error => {
     return Promise.reject(error);
 });
 
-// Interceptor para manejar el token de actualización
 instance.interceptors.response.use(
     response => response,
-    error => {
+    async error => {
         const originalRequest = error.config;
-
-        // Refresh token si el token expiró
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-            return axios.post(`${URL}/token/refresh/`, {
-                refresh: localStorage.getItem('refreshToken')
-            })
-            .then(response => {
+            try {
+                const refreshToken = localStorage.getItem('refreshToken');
+                const response = await axios.post(`${URL}/token/refresh/`, { refresh: refreshToken });
                 localStorage.setItem('accessToken', response.data.access);
-                instance.defaults.headers['Authorization'] = `JWT ${response.data.access}`;
-                originalRequest.headers['Authorization'] = `JWT ${response.data.access}`;
+                instance.defaults.headers['Authorization'] = `Bearer ${response.data.access}`;
+                originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
                 return axios(originalRequest);
-            });
+            } catch (refreshError) {
+                return Promise.reject(refreshError);
+            }
         }
         return Promise.reject(error);
     }

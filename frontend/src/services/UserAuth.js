@@ -11,32 +11,3 @@ export const registerForm = async (userData) => {
   }
 };
 
-export const signIn = async (userData) => {
-  try {
-    const response = await axios.post(`${API_URL}login/`, userData, { withCredentials: true });
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : new Error('Error desconocido');
-  }
-};
-
-export const signOut = async () => {
-  const accessToken = localStorage.getItem('accessToken');
-  
-  try {
-    const response = await axios.post(
-      `${API_URL}logout/`,
-      {},
-      {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        },
-        withCredentials: true
-      }
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : new Error('Error desconocido');
-  }
-};

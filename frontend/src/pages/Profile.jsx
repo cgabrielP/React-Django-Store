@@ -1,44 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import axios from '../manageAxios/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { useLog } from "../context/AuthContext";
+import { useEffect } from "react";
 
 const Profile = () => {
-    const [profile, setProfile] = useState(null);
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const accessToken = localStorage.getItem('accessToken');
-        if (!accessToken) {
-            navigate('/');
-            return;
-        }
-
-        axios.get('/userDetail/')
-            .then(response => {
-                setProfile(response.data);
-            })
-            .catch(error => {
-                if (error.response && error.response.status === 401) {
-                    navigate('/');
-                } else {
-                    setError('No se pudieron cargar los datos del perfil');
-                }
-            });
-    }, []);
-
-    return (
-        <div>
-            <h2>Perfil del Usuario</h2>
-            {error && <p>{error}</p>}
-            {profile && (
-                <div>
-                    <p>Email: {profile.email}</p>
-                    <p>Rol: {profile.role}</p>
-                </div>
-            )}
+  const { user } = useLog();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+        navigate("/login");
+    }
+  }, []);
+  return (
+    <div className="container ">
+      {user && (
+        <div className="profile my-5 py-5">
+          <h1>Perfil de {user.username}</h1>
+          <div className="user-details">
+            <p>
+              <strong>Nombre:</strong> {user.first_name}
+            </p>
+            <p>
+              <strong>Apellido:</strong> {user.last_name}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+          </div>
+          <button className="btn btn-primary">Reiniciar Contraseña</button>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default Profile;

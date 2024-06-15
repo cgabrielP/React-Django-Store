@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { signOut } from "../services/UserAuth";
-import logo from "../assets/logo/logo-login.png";
+import { useLog } from "../context/AuthContext";
 
 const Logout = () => {
   const navigate = useNavigate();
-
+  const { signOut } = useLog();
   useEffect(() => {
     const logoutUser = async () => {
       try {
         await signOut();
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
         navigate("/login");
       } catch (error) {
         console.error("Error en el cierre de sesión", error);

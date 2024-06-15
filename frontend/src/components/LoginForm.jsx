@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logo-login.png";
-import { signIn } from "../services/UserAuth";
+import { useLog } from "../context/AuthContext";
 
 const LoginForm = () => {
+  const { signIn } = useLog();
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -17,8 +18,6 @@ const LoginForm = () => {
     try {
       const data = await signIn({ username: user, password: password });
       setMessage("Inicio de sesión exitoso");
-      localStorage.setItem("accessToken", data.access);
-      localStorage.setItem("refreshToken", data.refresh);
       navigate("/");
     } catch (error) {
       setMessage(error.error || "Error en el inicio de sesión");
@@ -39,7 +38,13 @@ const LoginForm = () => {
                     INICIO SESI&Oacute;N
                   </p>
                   {message && (
-                    <p className={`alert ${message.includes("exitoso") ? "alert-success" : "alert-danger"} text-center`}>
+                    <p
+                      className={`alert ${
+                        message.includes("exitoso")
+                          ? "alert-success"
+                          : "alert-danger"
+                      } text-center`}
+                    >
                       {message}
                     </p>
                   )}
@@ -79,8 +84,12 @@ const LoginForm = () => {
                       </div>
                     </div>
                     <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button className="btn btn-success btn-lg" type="submit" disabled={loading}>
-                        {loading ? "Cargando..." : "Iniciar Sesi&oacute;n"}
+                      <button
+                        className="btn btn-success btn-lg"
+                        type="submit"
+                        disabled={loading}
+                      >
+                        {loading ? "Cargando..." : "Iniciar Sesión"}
                       </button>
                     </div>
                   </form>

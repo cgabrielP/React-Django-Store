@@ -1,15 +1,15 @@
 from rest_framework import status
 from rest_framework.response import Response
-from .serializers import RegisterSerializer, UserProfileSerializer
+from .serializers import RegisterSerializer, UserProfileSerializer,UserDetailSerializer
 from django.contrib.auth import authenticate, login, logout
 from .models import UserProfile
-from django.contrib.auth.decorators import login_required
-from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import getUserProfile
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
+
 
 @api_view(["POST"])
 def register(request):
@@ -27,7 +27,7 @@ def register(request):
     )
 
 
-@api_view(["POST"])
+""" @api_view(["POST"])
 def signIn(request):
     if request.method == "POST":
         data = request.data
@@ -64,28 +64,28 @@ def signIn(request):
                 {"error": "Credenciales inválidas"}, status=status.HTTP_401_UNAUTHORIZED
             )
 
+ """
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def signOut(request):
     logout(request)
-    return JsonResponse({'message': 'Cierre de sesión exitoso'}, status=200)
+    return JsonResponse({"message": "Cierre de sesión exitoso"}, status=200)
 
 
-@login_required
-@csrf_exempt
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def getUserDetail(request):
-    """
-    Vista para ver el perfil del usuario autenticado.
-    """
-    profile = getUserProfile(request.user)
 
-    if profile:
-        data = {
-            "email": profile.user.email,
-            "role": profile.role,
-            # Otros campos del perfil si los tienes
-        }
-        return JsonResponse(data)
-    else:
-        return JsonResponse({"error": "Perfil no encontrado"}, status=404)
+    try:
+        profile = User.objects.get(username=request.user)
+
+        
+    except UserProfile.DoesNotExist:
+        return Response(
+            {"error": "Perfil no encontrado"}, status=status.HTTP_404_NOT_FOUND
+        )
+    serializer = UserDetailSerializer(profile)
+    print(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)

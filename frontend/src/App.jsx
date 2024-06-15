@@ -7,29 +7,32 @@ import SingUp from "./pages/SingUp";
 import ProductDetail from "./pages/ProductDetail";
 import { Layout } from "./components/Layout";
 import { CartProvider } from "./context/CartContext";
-import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 import Logout from "./pages/Logout";
+import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
+  const isAuthenticated = () => {
+    return localStorage.getItem("accessToken") !== null;
+  };
   return (
+    <AuthProvider>
       <CartProvider>
         <Router>
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/error" element={<ErrorPage />} />
+              <Route path="/*" element={<ErrorPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signUp" element={<SingUp />} />
               <Route path="/product-detail/:id" element={<ProductDetail />} />
               <Route path="/logout" element={<Logout />} />
-
-{/*               <Route path="/orders" element={<Orders />} />
- */}              <Route path="/profile" element={<Profile/>} />
+               {isAuthenticated&& <Route path="/profile" element={<Profile />} />  }
             </Routes>
           </Layout>
         </Router>
       </CartProvider>
+    </AuthProvider>
   );
 };
 
