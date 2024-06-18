@@ -27,9 +27,13 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/signUp" element={<SingUp />} />
               <Route path="/product-detail/:id" element={<ProductDetail />} />
-              <Route path="/create" element={<CreateOrder />} />
-              <Route path="/logout" element={<Logout />} />
-               {isAuthenticated&& <Route path="/profile" element={<Profile />} />  }
+              {isAuthenticated && <Route path="/logout" element={<Logout />} />}
+              {isAuthenticated && (
+                <Route path="/create" element={<CreateOrder />} />
+              )}
+              {isAuthenticated && (
+                <Route path="/profile" element={<Profile />} />
+              )}
             </Routes>
           </Layout>
         </Router>
