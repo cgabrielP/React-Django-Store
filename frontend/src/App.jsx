@@ -10,6 +10,7 @@ import { CartProvider } from "./context/CartContext";
 import Profile from "./pages/Profile";
 import Logout from "./pages/Logout";
 import { AuthProvider } from "./context/AuthContext";
+import CreateOrder from "./pages/CreateOrder";
 
 const App = () => {
   const isAuthenticated = () => {
@@ -26,6 +27,7 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/signUp" element={<SingUp />} />
               <Route path="/product-detail/:id" element={<ProductDetail />} />
+              <Route path="/create" element={<CreateOrder />} />
               <Route path="/logout" element={<Logout />} />
                {isAuthenticated&& <Route path="/profile" element={<Profile />} />  }
             </Routes>

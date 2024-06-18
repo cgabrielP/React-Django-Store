@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "products",
     "users",
+    "orders",
     "rest_framework",
     "rest_framework_simplejwt",
 ]
